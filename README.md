@@ -3,7 +3,7 @@
 > APM Assignment — ShareChat Trending Tags Discovery System
 
 **Live Demo:** https://tangerine-sprinkles-c6eb08.netlify.app/  
-**GitHub Repo:** https://github.com/prathameshursal/Sharechat-trending 
+**GitHub Repo:** https://github.com/prathameshursal/Sharechat-trending  
 **Video Walkthrough:** https://loom.com/share/your-link-here
 
 ---
