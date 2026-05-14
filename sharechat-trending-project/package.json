@@ -1,0 +1,13 @@
+{
+  "name": "sharechat-trending-tags",
+  "version": "1.0.0",
+  "description": "ShareChat Trending Tags System - APM Assignment",
+  "scripts": {
+    "start": "python backend/app.py",
+    "dev": "python -m http.server 3000",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["sharechat", "trending", "india", "social-media"],
+  "author": "APM Candidate",
+  "license": "MIT"
+}

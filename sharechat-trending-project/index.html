@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FF6B35">
+    <title>ShareChat - ट्रेंडिंग टैग्स</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --bg: #F8F9FA;
+            --surface: #FFFFFF;
+            --text: #1A1A2E;
+            --text-secondary: #6B7280;
+            --border: #E5E7EB;
+            --success: #10B981;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            background: var(--bg);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .page-title {
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 15px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .category-scroll {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .category-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--surface);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .category-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(255,107,53,0.3);
+        }
+
+        .hero-trend {
+            margin: 16px;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8F5C 50%, #FFB088 100%);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+        }
+
+        .hero-trend::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.25);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-tag {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .hero-heat {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 32px;
+        }
+
+        .trends-section {
+            padding: 0 16px 16px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 12px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .trend-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trend-card:active {
+            transform: scale(0.98);
+        }
+
+        .trend-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--card-color, var(--primary));
+            border-radius: 16px 0 0 16px;
+        }
+
+        .trend-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .trend-rank-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .trend-rank {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            opacity: 0.4;
+            line-height: 1;
+            min-width: 36px;
+        }
+
+        .trend-rank.top3 {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .trend-info {
+            flex: 1;
+        }
+
+        .trend-tag {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .trend-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg);
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+
+        .trend-heat {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .heat-score {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--card-color, var(--primary));
+        }
+
+        .heat-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .trend-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+            padding-left: 48px;
+        }
+
+        .trend-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 48px;
+        }
+
+        .trend-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .trend-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-source-pills {
+            display: flex;
+            gap: 4px;
+        }
+
+        .source-pill {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .source-pill.active {
+            background: var(--primary);
+        }
+
+        .detail-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 200;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .detail-view.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .detail-header {
+            background: linear-gradient(135deg, var(--detail-color, var(--primary)) 0%, var(--detail-color-dark, var(--primary-dark)) 100%);
+            padding: 60px 20px 30px;
+            color: white;
+            position: relative;
+        }
+
+        .detail-back {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .detail-heat-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .detail-tag {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .detail-desc {
+            font-size: 15px;
+            opacity: 0.95;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .detail-stats-bar {
+            display: flex;
+            gap: 20px;
+        }
+
+        .detail-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .detail-stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .signal-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .signal-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .signal-label {
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 80px;
+            color: var(--text-secondary);
+        }
+
+        .signal-track {
+            flex: 1;
+            height: 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .signal-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease-out;
+        }
+
+        .signal-value {
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .post-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .post-text {
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ai-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 16px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .ai-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .ai-summary-text {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 16px;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+        }
+
+        .refresh-indicator {
+            text-align: center;
+            padding: 16px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            display: none;
+        }
+
+        .refresh-indicator.visible {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg) 25%, #e8e8e8 50%, var(--bg) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            height: 120px;
+        }
+
+        @media (max-width: 430px) {
+            .app-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div id="mainFeed">
+            <header class="header">
+                <div class="header-top">
+                    <div class="logo">
+                        <div class="logo-icon">&#128293;</div>
+                        <div class="logo-text">ShareChat</div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="header-btn">&#128276;</button>
+                        <button class="header-btn">&#9881;&#65039;</button>
+                    </div>
+                </div>
+                <div class="page-title">&#2335;&#2381;&#2352;&#2375;&#2306;&#2337;&#2367;&#2306;&#2327; &#2335;&#2376;&#2327;&#2381;&#2360;</div>
+            </header>
+
+            <div style="padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border);">
+                <div class="search-bar" style="background: var(--bg); border: 1.5px solid var(--border);">
+                    <span style="color: var(--text-secondary); font-size: 16px;">&#128269;</span>
+                    <input type="text" placeholder="&#2335;&#2381;&#2352;&#2375;&#2306;&#2337; &#2326;&#2379;&#2332;&#2375;&#2306;..." id="searchInput" style="color: var(--text);">
+                </div>
+            </div>
+
+            <div class="category-scroll" id="categoryScroll">
+                <button class="category-pill active" data-category="all">
+                    <span>&#128293;</span> &#2360;&#2349;&#2368;
+                </button>
+                <button class="category-pill" data-category="&#2352;&#2366;&#2332;&#2344;&#2368;&#2340;&#2367;">
+                    <span>&#128308;</span> &#2352;&#2366;&#2332;&#2344;&#2368;&#2340;&#2367;
+                </button>
+                <button class="category-pill" data-category="&#2326;&#2375;&#2354;">
+                    <span>&#127951;</span> &#2326;&#2375;&#2354;
+                </button>
+                <button class="category-pill" data-category="&#2350;&#2344;&#2379;&#2352;&#2306;&#2332;&#2344;">
+                    <span>&#127916;</span> &#2350;&#2344;&#2379;&#2352;&#2306;&#2332;&#2344;
+                </button>
+                <button class="category-pill" data-category="&#2360;&#2350;&#2366;&#2330;&#2366;&#2352;">
+                    <span>&#128240;</span> &#2360;&#2350;&#2366;&#2330;&#2366;&#2352;
+                </button>
+                <button class="category-pill" data-category="&#2340;&#2381;&#2351;&#2379;&#2361;&#2366;&#2352;">
+                    <span>&#129684;</span> &#2340;&#2381;&#2351;&#2379;&#2361;&#2366;&#2352;
+                </button>
+                <button class="category-pill" data-category="&#2346;&#2381;&#2352;&#2380;&#2342;&#2381;&#2351;&#2379;&#2327;&#2367;&#2325;&#2368;">
+                    <span>&#128241;</span> &#2335;&#2375;&#2325;
+                </button>
+                <button class="category-pill" data-category="&#2357;&#2366;&#2351;&#2352;&#2354;">
+                    <span>&#128293;</span> &#2357;&#2366;&#2351;&#2352;&#2354;
+                </button>
+            </div>
+
+            <div class="refresh-indicator" id="refreshIndicator">
+                <span class="spinner"></span>
+                &#2340;&#2366;&#2332;&#2366; &#2335;&#2381;&#2352;&#2375;&#2306;&#2337;&#2381;&#2360; &#2354;&#2379;&#2337; &#2361;&#2379; &#2352;&#2361;&#2375; &#2361;&#2376;&#2306;...
+            </div>
+
+            <div id="heroSection"></div>
+
+            <div class="trends-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span>&#128200;</span>
+                        &#2335;&#2377;&#2346; &#2335;&#2381;&#2352;&#2375;&#2306;&#2337;&#2381;&#2360;
+                    </div>
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        &#2354;&#2366;&#2311;&#2357;
+                    </div>
+                </div>
+                <div id="trendsList">
+                    <div class="skeleton-card">
+                        <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: 12px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 80%; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 40%;"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: 12px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 80%; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 40%;"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton" style="height: 20px; width: 60%; margin-bottom: 12px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 80%; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 80px;"></div>
+        </div>
+
+        <div class="detail-view" id="detailView">
+            <div class="detail-header" id="detailHeader">
+                <button class="detail-back" onclick="closeDetail()">&#8592;</button>
+                <div class="detail-heat-icon" id="detailHeatIcon">&#128293;</div>
+                <div class="detail-tag" id="detailTag">#Tag</div>
+                <div class="detail-desc" id="detailDesc">Description</div>
+                <div class="detail-stats-bar">
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="detailHeat">98</div>
+                        <div class="detail-stat-label">Heat Score</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="detailPosts">154K</div>
+                        <div class="detail-stat-label">Posts</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-value" id="detailEngagement">2.4M</div>
+                        <div class="detail-stat-label">Engagement</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-content">
+                <div class="ai-summary" id="aiSummary">
+                    <div class="ai-summary-header">
+                        <span>&#129302;</span> AI &#2360;&#2366;&#2352;&#2366;&#2306;&#2358;
+                    </div>
+                    <div class="ai-summary-text" id="aiSummaryText">
+                        Loading AI-generated summary...
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">
+                        <span>&#128202;</span> &#2360;&#2367;&#2327;&#2381;&#2344;&#2354; &#2348;&#2381;&#2352;&#2375;&#2325;&#2337;&#2366;&#2313;&#2344;
+                    </div>
+                    <div class="signal-bars" id="signalBars"></div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="detail-section-title">
+                        <span>&#128172;</span> &#2354;&#2379;&#2327; &#2325;&#2381;&#2351;&#2366; &#2325;&#2361; &#2352;&#2361;&#2375; &#2361;&#2376;&#2306;
+                    </div>
+                    <div id="relatedPosts"></div>
+                </div>
+            </div>
+
+            <div style="height: 40px;"></div>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active">
+                <span class="nav-icon">&#127968;</span>
+                <span>&#2361;&#2379;&#2350;</span>
+            </button>
+            <button class="nav-item">
+                <span class="nav-icon">&#128293;</span>
+                <span>&#2335;&#2381;&#2352;&#2375;&#2306;&#2337;&#2367;&#2306;&#2327;</span>
+            </button>
+            <button class="nav-item">
+                <span class="nav-icon">&#10133;</span>
+                <span>&#2346;&#2379;&#2360;&#2381;&#2335;</span>
+            </button>
+            <button class="nav-item">
+                <span class="nav-icon">&#128172;</span>
+                <span>&#2330;&#2376;&#2335;</span>
+            </button>
+            <button class="nav-item">
+                <span class="nav-icon">&#128100;</span>
+                <span>&#2346;&#2381;&#2352;&#2379;&#2347;&#2366;&#2311;&#2354;</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        let trendsData = [];
+        let currentCategory = 'all';
+        let currentTrend = null;
+
+        const mockTrends = [
+            {
+                "rank": 1,
+                "tag": "#पश्चिमबंगालचुनाव",
+                "hindi_tag": "#पश्चिमबंगालचुनाव",
+                "description": "बीजेपी ने पश्चिम बंगाल में ऐतिहासिक जीत दर्ज की, ममता बनर्जी हारीं",
+                "short_desc": "बीजेपी की ऐतिहासिक जीत, ममता हारीं",
+                "category": "राजनीति",
+                "heat_score": 98.5,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 35, "social": 30, "search": 25, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 5200000, "shares": 890000, "comments": 450000},
+                "recency_hours": 2,
+                "related_posts": 154000,
+                "location": "पश्चिम बंगाल, भारत",
+                "icon": "🔴",
+                "color": "#FF4444",
+                "heat_label": "🔥🔥🔥",
+                "formatted_engagement": "16.8M",
+                "time_ago": "2 घंटे पहले",
+                "related_content": [
+                    {"author": "राजनीति_गुरु", "avatar": "👤", "text": "यह ऐतिहासिक दिन है! 🎉 जनता ने अपना फैसला सुना दिया। #जनताकाजनादेश", "likes": 45200, "shares": 12300, "time": "2h"},
+                    {"author": "समाचार_जंक्शन", "avatar": "📺", "text": "तस्वीरें: BJP कार्यकर्ताओं का जश्न, देखिए खास रिपोर्ट और विश्लेषण", "likes": 38900, "shares": 9800, "time": "3h"},
+                    {"author": "नागरिक_वाणी", "avatar": "🎤", "text": "मतदाताओं ने क्या सोचकर वोट दिया? हमारा विश्लेषण पढ़ें 👇", "likes": 32100, "shares": 8700, "time": "4h"}
+                ]
+            },
+            {
+                "rank": 2,
+                "tag": "#ममताबनर्जी",
+                "hindi_tag": "#ममताबनर्जी",
+                "description": "ममता बनर्जी भवानीपुर सीट से हारीं, सुवेंदु अधिकारी जीते",
+                "short_desc": "ममता की हार, सुवेंदु की जीत",
+                "category": "राजनीति",
+                "heat_score": 95.2,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 32, "social": 28, "search": 22, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 4800000, "shares": 760000, "comments": 380000},
+                "recency_hours": 3,
+                "related_posts": 132000,
+                "location": "पश्चिम बंगाल",
+                "icon": "🔴",
+                "color": "#FF4444",
+                "heat_label": "🔥🔥🔥",
+                "formatted_engagement": "15.2M",
+                "time_ago": "3 घंटे पहले",
+                "related_content": [
+                    {"author": "बंगाल_अपडेट", "avatar": "📰", "text": "भवानीपुर में 15,105 वोटों से हार। यह कहानी अभी शुरू हुई है...", "likes": 67800, "shares": 23400, "time": "1h"},
+                    {"author": "राजनीति_दृष्टि", "avatar": "👁️", "text": "ममता बनर्जी का यह क्या अगला कदम होगा?", "likes": 45600, "shares": 15600, "time": "2h"}
+                ]
+            },
+            {
+                "rank": 3,
+                "tag": "#विजयतमिलनाडु",
+                "hindi_tag": "#विजयतमिलनाडु",
+                "description": "अभिनेता विजय की पार्टी तमिलनाडु चुनाव में धमाकेदार डेब्यू",
+                "short_desc": "अभिनेता विजय की राजनीतिक एंट्री",
+                "category": "राजनीति",
+                "heat_score": 91.8,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 28, "social": 26, "search": 20, "entertainment": 8, "cultural": 0},
+                "engagement": {"views": 3900000, "shares": 620000, "comments": 310000},
+                "recency_hours": 4,
+                "related_posts": 98000,
+                "location": "तमिलनाडु",
+                "icon": "🔴",
+                "color": "#FF6B35",
+                "heat_label": "🔥🔥🔥",
+                "formatted_engagement": "12.4M",
+                "time_ago": "4 घंटे पहले",
+                "related_content": [
+                    {"author": "साउथ_सिनेमा", "avatar": "🎬", "text": "थलापति विजय ने MGR की राह पर चलने का फैसला किया! 🌟", "likes": 89200, "shares": 34500, "time": "1h"},
+                    {"author": "तमिल_अपडेट", "avatar": "📰", "text": "विजय की पार्टी ने कितनी सीटें जीतीं? पूरी लिस्ट यहां", "likes": 56700, "shares": 21300, "time": "3h"}
+                ]
+            },
+            {
+                "rank": 4,
+                "tag": "#बुद्धपूर्णिमा",
+                "hindi_tag": "#बुद्धपूर्णिमा",
+                "description": "बुद्ध पूर्णिमा 2026: देशभर में बौद्ध धर्मावलंबियों का उत्सव",
+                "short_desc": "बुद्ध जयंती, देशभर उत्सव",
+                "category": "त्योहार",
+                "heat_score": 88.4,
+                "sources": ["cultural", "social", "search"],
+                "source_breakdown": {"news": 10, "social": 20, "search": 18, "entertainment": 0, "cultural": 25},
+                "engagement": {"views": 3200000, "shares": 540000, "comments": 280000},
+                "recency_hours": 6,
+                "related_posts": 87000,
+                "location": "भारत",
+                "icon": "🪔",
+                "color": "#FFD700",
+                "heat_label": "🔥🔥",
+                "formatted_engagement": "10.8M",
+                "time_ago": "6 घंटे पहले",
+                "related_content": [
+                    {"author": "धर्म_ज्ञान", "avatar": "🙏", "text": "बुद्ध पूर्णिमा की शुभकामनाएं! 🪔✨ बोधगया में भव्य आयोजन", "likes": 89200, "shares": 34500, "time": "1h"},
+                    {"author": "त्योहार_विशेष", "avatar": "🎊", "text": "बुद्ध के उपदेश आज भी प्रासंगिक हैं, देखिए खास वीडियो", "likes": 56700, "shares": 21300, "time": "3h"}
+                ]
+            },
+            {
+                "rank": 5,
+                "tag": "#IPL2026",
+                "hindi_tag": "#IPL2026",
+                "description": "IPL 2026: प्लेऑफ की रेस तेज, मुंबई vs लखनऊ मैच आज",
+                "short_desc": "IPL प्लेऑफ रेस, आज का मैच",
+                "category": "खेल",
+                "heat_score": 86.7,
+                "sources": ["entertainment", "social", "search"],
+                "source_breakdown": {"news": 15, "social": 25, "search": 20, "entertainment": 18, "cultural": 0},
+                "engagement": {"views": 4100000, "shares": 480000, "comments": 220000},
+                "recency_hours": 5,
+                "related_posts": 76000,
+                "location": "भारत",
+                "icon": "🏏",
+                "color": "#1E88E5",
+                "heat_label": "🔥🔥",
+                "formatted_engagement": "10.2M",
+                "time_ago": "5 घंटे पहले",
+                "related_content": [
+                    {"author": "क्रिकेट_किंग", "avatar": "🏏", "text": "क्या मैच! आखिरी ओवर में जीत 🏆 हाइलाइट्स देखें", "likes": 67800, "shares": 23400, "time": "1h"},
+                    {"author": "स्पोर्ट्स_अपडेट", "avatar": "⚡", "text": "प्लेऑफ की रेस में ये टीमें आगे, पॉइंट्स टेबल", "likes": 45600, "shares": 15600, "time": "2h"}
+                ]
+            },
+            {
+                "rank": 6,
+                "tag": "#गैससिलेंडरमहंगा",
+                "hindi_tag": "#गैससिलेंडरमहंगा",
+                "description": "कमर्शियल LPG सिलेंडर की कीमत में सबसे बड़ी बढ़ोतरी",
+                "short_desc": "LPG सिलेंडर की कीमत में बढ़ोतरी",
+                "category": "समाचार",
+                "heat_score": 84.3,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 30, "social": 22, "search": 20, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 2800000, "shares": 510000, "comments": 340000},
+                "recency_hours": 8,
+                "related_posts": 65000,
+                "location": "भारत",
+                "icon": "📰",
+                "color": "#FF9800",
+                "heat_label": "🔥🔥",
+                "formatted_engagement": "10.4M",
+                "time_ago": "8 घंटे पहले",
+                "related_content": [
+                    {"author": "ब्रेकिंग_न्यूज", "avatar": "📰", "text": "ताजा अपडेट: सरकार ने कीमत बढ़ाने का बचाव किया", "likes": 23400, "shares": 8900, "time": "30m"},
+                    {"author": "जनता_की_आवाज", "avatar": "📢", "text": "इसका असर आम लोगों पर क्या होगा? विश्लेषण", "likes": 18900, "shares": 6700, "time": "1h"}
+                ]
+            },
+            {
+                "rank": 7,
+                "tag": "#गर्मी2026",
+                "hindi_tag": "#गर्मी2026",
+                "description": "उत्तर भारत में भीषण गर्मी, कई शहरों में 45°C पार",
+                "short_desc": "भीषण गर्मी, 45°C पार",
+                "category": "समाचार",
+                "heat_score": 82.1,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 25, "social": 18, "search": 22, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 2500000, "shares": 420000, "comments": 290000},
+                "recency_hours": 10,
+                "related_posts": 58000,
+                "location": "उत्तर भारत",
+                "icon": "📰",
+                "color": "#FF5722",
+                "heat_label": "🔥🔥",
+                "formatted_engagement": "9.1M",
+                "time_ago": "10 घंटे पहले",
+                "related_content": [
+                    {"author": "मौसम_अपडेट", "avatar": "🌡️", "text": "45°C पार! ये टिप्स आपको गर्मी से बचाएंगे 💡", "likes": 34500, "shares": 12300, "time": "2h"},
+                    {"author": "स्वास्थ्य_गुरु", "avatar": "💊", "text": "गर्मी में रहें हाइड्रेटेड, ये ड्रिंक्स ट्राई करें", "likes": 28900, "shares": 9800, "time": "3h"}
+                ]
+            },
+            {
+                "rank": 8,
+                "tag": "#असमचुनाव",
+                "hindi_tag": "#असमचुनाव",
+                "description": "असम विधानसभा चुनाव परिणाम: बीजेपी-NDA की जीत",
+                "short_desc": "असम में NDA की जीत",
+                "category": "राजनीति",
+                "heat_score": 79.5,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 28, "social": 20, "search": 18, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 2100000, "shares": 350000, "comments": 180000},
+                "recency_hours": 12,
+                "related_posts": 45000,
+                "location": "असम",
+                "icon": "🔴",
+                "color": "#FF4444",
+                "heat_label": "🔥",
+                "formatted_engagement": "7.5M",
+                "time_ago": "12 घंटे पहले",
+                "related_content": [
+                    {"author": "असम_न्यूज", "avatar": "📰", "text": "हिमंता बिस्वा सरमा फिर CM बनेंगे, जश्न शुरू", "likes": 23400, "shares": 8900, "time": "2h"}
+                ]
+            },
+            {
+                "rank": 9,
+                "tag": "#वैशालीशतरंज",
+                "hindi_tag": "#वैशालीशतरंज",
+                "description": "वैशाली रमेशबाबू ने Candidates जीता, विश्व चैंपियनशिप के लिए क्वालीफाई",
+                "short_desc": "वैशाली का शतरंज में इतिहास",
+                "category": "खेल",
+                "heat_score": 76.8,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 22, "social": 18, "search": 15, "entertainment": 0, "cultural": 5},
+                "engagement": {"views": 1800000, "shares": 320000, "comments": 150000},
+                "recency_hours": 14,
+                "related_posts": 38000,
+                "location": "भारत",
+                "icon": "🏏",
+                "color": "#1E88E5",
+                "heat_label": "🔥",
+                "formatted_engagement": "6.8M",
+                "time_ago": "14 घंटे पहले",
+                "related_content": [
+                    {"author": "शतरंज_प्रेमी", "avatar": "♟️", "text": "भारत की बेटी ने इतिहास रचा! 🇮🇳 वैशाली रमेशबाबू", "likes": 45600, "shares": 18900, "time": "1h"},
+                    {"author": "स्पोर्ट्स_हब", "avatar": "🏆", "text": "दूसरी भारतीय महिला जो विश्व चैंपियनशिप खेलेंगी", "likes": 34500, "shares": 12300, "time": "3h"}
+                ]
+            },
+            {
+                "rank": 10,
+                "tag": "#स्ट्रेंजरथिंग्स5",
+                "hindi_tag": "#स्ट्रेंजरथिंग्स5",
+                "description": "Stranger Things Season 5 आज Netflix पर रिलीज, भारत में क्रेज",
+                "short_desc": "Stranger Things S5 रिलीज",
+                "category": "मनोरंजन",
+                "heat_score": 74.2,
+                "sources": ["entertainment", "social", "search"],
+                "source_breakdown": {"news": 5, "social": 28, "search": 22, "entertainment": 20, "cultural": 0},
+                "engagement": {"views": 3500000, "shares": 480000, "comments": 210000},
+                "recency_hours": 3,
+                "related_posts": 92000,
+                "location": "भारत",
+                "icon": "🎬",
+                "color": "#9C27B0",
+                "heat_label": "🔥",
+                "formatted_engagement": "10.2M",
+                "time_ago": "3 घंटे पहले",
+                "related_content": [
+                    {"author": "फिल्मी_दुनिया", "avatar": "🎬", "text": "binge-watch करने लायक! रिव्यू ⭐⭐⭐⭐ स्पॉयलर फ्री", "likes": 54300, "shares": 18900, "time": "2h"},
+                    {"author": "OTT_अपडेट", "avatar": "📺", "text": "भारत में Netflix ट्रेंडिंग #1, देखिए क्यों 🔥", "likes": 41200, "shares": 13400, "time": "3h"}
+                ]
+            },
+            {
+                "rank": 11,
+                "tag": "#RGकरमामला",
+                "hindi_tag": "#RGकरमामला",
+                "description": "RG Kar मेडिकल कॉलेज मामला: पीड़िता की मां चुनाव जीतीं",
+                "short_desc": "RG Kar पीड़िता की मां जीतीं",
+                "category": "समाचार",
+                "heat_score": 72.6,
+                "sources": ["news", "social"],
+                "source_breakdown": {"news": 25, "social": 24, "search": 15, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 1600000, "shares": 290000, "comments": 170000},
+                "recency_hours": 16,
+                "related_posts": 34000,
+                "location": "पश्चिम बंगाल",
+                "icon": "📰",
+                "color": "#E53935",
+                "heat_label": "🔥",
+                "formatted_engagement": "6.8M",
+                "time_ago": "16 घंटे पहले",
+                "related_content": [
+                    {"author": "न्याय_की_आवाज", "avatar": "⚖️", "text": "न्याय की जीत! RG Kar पीड़िता की मां ने चुनाव जीता", "likes": 67800, "shares": 34500, "time": "1h"}
+                ]
+            },
+            {
+                "rank": 12,
+                "tag": "#केरलचुनाव",
+                "hindi_tag": "#केरलचुनाव",
+                "description": "केरल विधानसभा चुनाव परिणाम: UDF की जीत",
+                "short_desc": "केरल में UDF की जीत",
+                "category": "राजनीति",
+                "heat_score": 70.3,
+                "sources": ["news", "social", "search"],
+                "source_breakdown": {"news": 26, "social": 18, "search": 16, "entertainment": 0, "cultural": 0},
+                "engagement": {"views": 1500000, "shares": 260000, "comments": 140000},
+                "recency_hours": 18,
+                "related_posts": 31000,
+                "location": "केरल",
+                "icon": "🔴",
+                "color": "#FF4444",
+                "heat_label": "🔥",
+                "formatted_engagement": "6.2M",
+                "time_ago": "18 घंटे पहले",
+                "related_content": [
+                    {"author": "केरल_न्यूज", "avatar": "📰", "text": "UDF ने वामपंथी सरकार को हराया, परिणाम विश्लेषण", "likes": 23400, "shares": 8900, "time": "2h"}
+                ]
+            }
+        ];
+
+        // ===== RENDER =====
+        function renderTrends(trends) {
+            const heroSection = document.getElementById('heroSection');
+            const trendsList = document.getElementById('trendsList');
+
+            if (trends.length === 0) {
+                trendsList.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128269;</div><div class="empty-text">इस कैटेगरी में कोई ट्रेंड नहीं</div></div>';
+                heroSection.innerHTML = '';
+                return;
+            }
+
+            const hero = trends[0];
+            heroSection.innerHTML = `
+                <div class="hero-trend" onclick="openDetail('${hero.tag}')">
+                    <div class="hero-heat">${hero.heat_label}</div>
+                    <div class="hero-badge"><span>&#128293;</span> #1 ट्रेंडिंग</div>
+                    <div class="hero-tag">${hero.hindi_tag}</div>
+                    <div class="hero-desc">${hero.description}</div>
+                    <div class="hero-stats">
+                        <div class="hero-stat"><span>&#128202;</span> ${hero.heat_score} Heat</div>
+                        <div class="hero-stat"><span>&#128172;</span> ${hero.formatted_engagement}</div>
+                        <div class="hero-stat"><span>&#128344;</span> ${hero.time_ago}</div>
+                    </div>
+                </div>
+            `;
+
+            const listTrends = trends.slice(1);
+            trendsList.innerHTML = listTrends.map(trend => `
+                <div class="trend-card" style="--card-color: ${trend.color}" onclick="openDetail('${trend.tag}')">
+                    <div class="trend-header">
+                        <div class="trend-rank-section">
+                            <div class="trend-rank ${trend.rank <= 3 ? 'top3' : ''}">${trend.rank}</div>
+                            <div class="trend-info">
+                                <div class="trend-tag">${trend.hindi_tag}</div>
+                                <div class="trend-category"><span>${trend.icon}</span> ${trend.category}</div>
+                            </div>
+                        </div>
+                        <div class="trend-heat">
+                            <div class="heat-score" style="color: ${trend.color}">${trend.heat_score}</div>
+                            <div class="heat-label">${trend.heat_label}</div>
+                        </div>
+                    </div>
+                    <div class="trend-desc">${trend.short_desc}</div>
+                    <div class="trend-footer">
+                        <div class="trend-meta">
+                            <span>&#128172; ${trend.formatted_engagement}</span>
+                            <span>&#128344; ${trend.time_ago}</span>
+                        </div>
+                        <div class="trend-source-pills">
+                            ${trend.sources.map(s => '<div class="source-pill active"></div>').join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openDetail(tag) {
+            const trend = trendsData.find(t => t.tag === tag);
+            if (!trend) return;
+            currentTrend = trend;
+
+            document.getElementById('detailTag').textContent = trend.hindi_tag;
+            document.getElementById('detailDesc').textContent = trend.description;
+            document.getElementById('detailHeat').textContent = trend.heat_score;
+            document.getElementById('detailHeatIcon').textContent = trend.heat_label;
+            document.getElementById('detailPosts').textContent = (trend.related_posts / 1000).toFixed(0) + 'K';
+            document.getElementById('detailEngagement').textContent = trend.formatted_engagement;
+
+            const header = document.getElementById('detailHeader');
+            header.style.background = `linear-gradient(135deg, ${trend.color} 0%, ${trend.color}dd 100%)`;
+
+            const summaries = {
+                'राजनीति': `यह ट्रेंड भारतीय राजनीति में एक महत्वपूर्ण घटना को दर्शाता है। सोशल मीडिया पर इस पर intense बहस चल रही है। ${trend.engagement.views > 3000000 ? 'यह आज का सबसे viral political topic है।' : 'यह अपनी category में top trending में से एक है।'}`,
+                'खेल': `स्पोर्ट्स fans इस topic को लेकर काफी excited हैं। ${trend.engagement.shares > 400000 ? 'इसे काफी share किया जा रहा है, जो इसकी popularity दर्शाता है।' : 'Live updates के साथ यह trend grow हो रहा है।'}`,
+                'मनोरंजन': `Entertainment enthusiasts इस content को binge-watch कर रहे हैं। ${trend.engagement.comments > 200000 ? 'Comments section में active discussion चल रही है।' : 'OTT platforms पर यह top trending में है।'}`,
+                'त्योहार': `यह सांस्कृतिक/धार्मिक event भारत भर में celebrate हो रहा है। ${trend.engagement.shares > 400000 ? 'लोग अपने experiences share कर रहे हैं।' : 'Traditional और modern दोनों तरह से celebrations देखे जा रहे हैं।'}`,
+                'समाचार': `यह breaking news story भारत में काफी discussed हो रही है। ${trend.engagement.comments > 300000 ? 'Public opinion divided है, जैसा comments से पता चलता है।' : 'News channels और social media दोनों पर active coverage है।'}`
+            };
+            document.getElementById('aiSummaryText').textContent = summaries[trend.category] || summaries['समाचार'];
+
+            const signalColors = {'news': '#EF4444', 'social': '#3B82F6', 'search': '#10B981', 'entertainment': '#8B5CF6', 'cultural': '#F59E0B'};
+            const signalNames = {'news': 'समाचार', 'social': 'सोशल मीडिया', 'search': 'सर्च वॉल्यूम', 'entertainment': 'मनोरंजन', 'cultural': 'सांस्कृतिक'};
+
+            document.getElementById('signalBars').innerHTML = Object.entries(trend.source_breakdown)
+                .filter(([_, val]) => val > 0)
+                .map(([key, val]) => `
+                    <div class="signal-bar">
+                        <div class="signal-label">${signalNames[key] || key}</div>
+                        <div class="signal-track"><div class="signal-fill" style="width: ${val}%; background: ${signalColors[key] || '#999'}"></div></div>
+                        <div class="signal-value">${val}%</div>
+                    </div>
+                `).join('');
+
+            document.getElementById('relatedPosts').innerHTML = trend.related_content.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">${post.avatar}</div>
+                        <div class="post-author-info">
+                            <div class="post-author">${post.author}</div>
+                            <div class="post-time">${post.time} ago</div>
+                        </div>
+                    </div>
+                    <div class="post-text">${post.text}</div>
+                    <div class="post-actions">
+                        <div class="post-action">&#10084;&#65039; ${(post.likes / 1000).toFixed(1)}K</div>
+                        <div class="post-action">&#128260; ${(post.shares / 1000).toFixed(1)}K</div>
+                        <div class="post-action">&#128172; ${(post.shares / 2000).toFixed(1)}K</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('detailView').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            document.getElementById('detailView').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('categoryScroll').addEventListener('click', (e) => {
+            const pill = e.target.closest('.category-pill');
+            if (!pill) return;
+            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentCategory = pill.dataset.category;
+            filterTrends();
+        });
+
+        function filterTrends() {
+            let filtered = trendsData;
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(t => t.category === currentCategory);
+            }
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(t => 
+                    t.hindi_tag.toLowerCase().includes(searchTerm) ||
+                    t.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            filtered = filtered.map((t, i) => ({...t, rank: i + 1}));
+            renderTrends(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterTrends);
+
+        function loadTrends() {
+            const indicator = document.getElementById('refreshIndicator');
+            indicator.classList.add('visible');
+
+            setTimeout(() => {
+                trendsData = mockTrends;
+                indicator.classList.remove('visible');
+                renderTrends(trendsData);
+            }, 800);
+        }
+
+        loadTrends();
+
+        let touchStartY = 0;
+        const mainFeed = document.getElementById('mainFeed');
+        mainFeed.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+        mainFeed.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            if (touchEndY - touchStartY > 100 && mainFeed.scrollTop === 0) loadTrends();
+        }, { passive: true });
+    </script>
+</body>
+</html>
